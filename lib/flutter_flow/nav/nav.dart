@@ -96,14 +96,34 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const SignUpPageWidget(),
         ),
         FFRoute(
-          name: 'Inscription_page',
-          path: '/inscriptionPage',
-          builder: (context, params) => const InscriptionPageWidget(),
-        ),
-        FFRoute(
           name: 'home_page',
           path: '/homePage',
           builder: (context, params) => const HomePageWidget(),
+        ),
+        FFRoute(
+          name: 'forgot_page',
+          path: '/forgotPage',
+          builder: (context, params) => const ForgotPageWidget(),
+        ),
+        FFRoute(
+          name: 'description_page',
+          path: '/descriptionPage',
+          builder: (context, params) => const DescriptionPageWidget(),
+        ),
+        FFRoute(
+          name: 'group_chat',
+          path: '/groupChat',
+          builder: (context, params) => const GroupChatWidget(),
+        ),
+        FFRoute(
+          name: 'personal_chat',
+          path: '/personalChat',
+          builder: (context, params) => const PersonalChatWidget(),
+        ),
+        FFRoute(
+          name: 'inscription_page',
+          path: '/inscriptionPage',
+          builder: (context, params) => const InscriptionPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

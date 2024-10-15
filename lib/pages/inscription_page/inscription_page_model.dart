@@ -1,17 +1,23 @@
-import '/backend/api_requests/api_calls.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'inscription_page_widget.dart' show InscriptionPageWidget;
 import 'package:flutter/material.dart';
 
 class InscriptionPageModel extends FlutterFlowModel<InscriptionPageWidget> {
+  ///  Local state fields for this page.
+
+  String? selectedLeagueId;
+
+  String? selectedClub;
+
+  String? selctedSport;
+
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - API (premier league )] action in Image widget.
-  ApiCallResponse? premier;
-  // Stores action output result for [Backend Call - API (laliga)] action in Image widget.
-  ApiCallResponse? laligaapivariable;
-  // Stores action output result for [Backend Call - API (laliga)] action in Image widget.
-  ApiCallResponse? logoImageGrid;
+  // Stores action output result for [Backend Call - Query Rows] action in Connexionbutton widget.
+  List<ClubFavRow>? result;
+  // Stores action output result for [Backend Call - Update Row(s)] action in Connexionbutton widget.
+  List<ClubFavRow>? results;
 
   @override
   void initState(BuildContext context) {}

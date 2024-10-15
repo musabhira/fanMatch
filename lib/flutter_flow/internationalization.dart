@@ -247,53 +247,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'ml': '',
     },
   },
-  // Inscription_page
-  {
-    'lrmdwo8s': {
-      'en': 'Choisi ton équipe',
-      'fr': '',
-      'ml': '',
-    },
-    '0ed7kgl6': {
-      'en': 'Quel sport ?',
-      'fr': '',
-      'ml': '',
-    },
-    'nmaohotq': {
-      'en': 'Football',
-      'fr': '',
-      'ml': '',
-    },
-    'fl98cgd9': {
-      'en': 'Rugby',
-      'fr': '',
-      'ml': '',
-    },
-    'bh8jjt34': {
-      'en': 'Quelle ligue ?',
-      'fr': '',
-      'ml': '',
-    },
-    'c523y1yy': {
-      'en': 'Quel club ?',
-      'fr': '',
-      'ml': '',
-    },
-    'sh3diyyf': {
-      'en': 'Home',
-      'fr': '',
-      'ml': '',
-    },
-  },
   // home_page
   {
     's7hvi40f': {
       'en': 'Fans',
-      'fr': '',
-      'ml': '',
-    },
-    '5ywk9mv9': {
-      'en': 'Hello World',
       'fr': '',
       'ml': '',
     },
@@ -337,12 +294,142 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'fr': '',
       'ml': '',
     },
+    'mrztwxwe': {
+      'en': 'Afficher',
+      'fr': '',
+      'ml': '',
+    },
     'z5ozqpqp': {
       'en': 'Matchs',
       'fr': '',
       'ml': '',
     },
     'wfp4mdgk': {
+      'en': 'Home',
+      'fr': '',
+      'ml': '',
+    },
+  },
+  // forgot_page
+  {
+    'a3p4qyoc': {
+      'en': 'Email',
+      'fr': '',
+      'ml': '',
+    },
+    'pshkuthu': {
+      'en': 'submit',
+      'fr': '',
+      'ml': '',
+    },
+    'kx16i8gf': {
+      'en': 'forgot password',
+      'fr': '',
+      'ml': '',
+    },
+    'sh3diyyf': {
+      'en': 'Home',
+      'fr': '',
+      'ml': '',
+    },
+  },
+  // description_page
+  {
+    'vf3hmycn': {
+      'en': 'Décrivez-vous',
+      'fr': '',
+      'ml': '',
+    },
+    'davw7bzb': {
+      'en': 'Description',
+      'fr': '',
+      'ml': '',
+    },
+    's9r7ptqb': {
+      'en': 'Décrivez qui vous supporter....',
+      'fr': '',
+      'ml': '',
+    },
+    'zewpr5m4': {
+      'en': 'connexion',
+      'fr': '',
+      'ml': '',
+    },
+    'mjuyn11y': {
+      'en': 'Home',
+      'fr': '',
+      'ml': '',
+    },
+  },
+  // group_chat
+  {
+    '57y4kmrw': {
+      'en': 'group chat',
+      'fr': '',
+      'ml': '',
+    },
+    'u3j5qk1k': {
+      'en': 'Home',
+      'fr': '',
+      'ml': '',
+    },
+  },
+  // personal_chat
+  {
+    '20leweaf': {
+      'en': 'personal',
+      'fr': '',
+      'ml': '',
+    },
+    'fzrmsrkw': {
+      'en': 'Home',
+      'fr': '',
+      'ml': '',
+    },
+  },
+  // inscription_page
+  {
+    'rd5n8oe2': {
+      'en': 'Sign Out',
+      'fr': '',
+      'ml': '',
+    },
+    'bi9nkhv7': {
+      'en': 'Choisi ton équipe',
+      'fr': '',
+      'ml': '',
+    },
+    'tt7kqwez': {
+      'en': 'Quel sport ?',
+      'fr': '',
+      'ml': '',
+    },
+    'veaickj9': {
+      'en': 'Football',
+      'fr': '',
+      'ml': '',
+    },
+    'bl7x6zs1': {
+      'en': 'Rugby',
+      'fr': '',
+      'ml': '',
+    },
+    'gr7juxgl': {
+      'en': 'Quelle ligue ?',
+      'fr': '',
+      'ml': '',
+    },
+    '1u64pi32': {
+      'en': 'Quel club ?',
+      'fr': '',
+      'ml': '',
+    },
+    'ljx95wcv': {
+      'en': 'Suivant',
+      'fr': '',
+      'ml': '',
+    },
+    'h4ze6s29': {
       'en': 'Home',
       'fr': '',
       'ml': '',

@@ -43,15 +43,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        body: SafeArea(
-          top: true,
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primary,
+      body: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 60.0, 0.0, 0.0),
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -84,14 +83,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 height: 78.0,
                 decoration: const BoxDecoration(),
                 alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  FFLocalizations.of(context).getText(
-                    '01efnkj9' /* Connexion */,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 40.0, 0.0, 0.0),
+                  child: Text(
+                    FFLocalizations.of(context).getText(
+                      '01efnkj9' /* Connexion */,
+                    ),
+                    style: FlutterFlowTheme.of(context).headlineMedium.override(
+                          fontFamily: 'Oswald',
+                          letterSpacing: 0.0,
+                        ),
                   ),
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Oswald',
-                        letterSpacing: 0.0,
-                      ),
                 ),
               ),
               Align(
@@ -278,8 +280,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 21.0, 0.0),
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      context.pushNamed('forgot_page');
                     },
                     text: FFLocalizations.of(context).getText(
                       'vpcjc2b5' /* Mots de passe oublié ? */,
@@ -323,7 +325,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                           }
 
                           context.goNamedAuth(
-                              'Inscription_page', context.mounted);
+                              'inscription_page', context.mounted);
                         },
                         text: FFLocalizations.of(context).getText(
                           '6jwbema7' /* connexion */,
@@ -371,7 +373,15 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
-                              await actions.signInWithGoogle();
+                              GoRouter.of(context).prepareAuthEvent();
+                              final user =
+                                  await authManager.signInWithGoogle(context);
+                              if (user == null) {
+                                return;
+                              }
+
+                              context.pushNamedAuth(
+                                  'inscription_page', context.mounted);
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
@@ -385,18 +395,22 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                                Text(
-                                  FFLocalizations.of(context).getText(
-                                    'k5iw77xo' /* Login with Google */,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 4.0, 0.0, 4.0),
+                                  child: Text(
+                                    FFLocalizations.of(context).getText(
+                                      'k5iw77xo' /* Login with Google */,
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .labelSmall
+                                        .override(
+                                          fontFamily: 'Lexend',
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryText,
+                                          letterSpacing: 0.0,
+                                        ),
                                   ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .labelSmall
-                                      .override(
-                                        fontFamily: 'Lexend',
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        letterSpacing: 0.0,
-                                      ),
                                 ),
                               ],
                             ),
@@ -427,7 +441,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               alignment: const AlignmentDirectional(0.0, 0.0),
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    8.0, 0.0, 0.0, 0.0),
+                                    8.0, 4.0, 0.0, 4.0),
                                 child: InkWell(
                                   splashColor: Colors.transparent,
                                   focusColor: Colors.transparent,

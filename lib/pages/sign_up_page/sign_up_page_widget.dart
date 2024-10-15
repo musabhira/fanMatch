@@ -59,8 +59,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primary,
-        body: SafeArea(
-          top: true,
+        body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -97,10 +96,20 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                     Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(21.0, 0.0, 0.0, 0.0),
-                      child: Icon(
-                        Icons.arrow_back_ios_sharp,
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        size: 24.0,
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          context.pushNamed('Login_page');
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios_sharp,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          size: 24.0,
+                        ),
                       ),
                     ),
                     Text(
@@ -745,7 +754,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                             );
 
                             context.goNamedAuth(
-                              'Inscription_page',
+                              'inscription_page',
                               context.mounted,
                               extra: <String, dynamic>{
                                 kTransitionInfoKey: const TransitionInfo(

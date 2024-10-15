@@ -222,8 +222,16 @@ dynamic deserializeParam<T>(
             return EventRow(data);
           case SportsRow:
             return SportsRow(data);
-          case LeagueRow:
-            return LeagueRow(data);
+          case ClubFavRow:
+            return ClubFavRow(data);
+          case DescriptionRow:
+            return DescriptionRow(data);
+          case FavoriteClubsViewRow:
+            return FavoriteClubsViewRow(data);
+          case LeaguesRow:
+            return LeaguesRow(data);
+          case ClubsRow:
+            return ClubsRow(data);
           case UsersRow:
             return UsersRow(data);
           default:

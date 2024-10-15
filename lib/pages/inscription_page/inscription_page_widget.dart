@@ -1,9 +1,10 @@
-import '/backend/api_requests/api_calls.dart';
+import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'inscription_page_model.dart';
 export 'inscription_page_model.dart';
 
@@ -36,460 +37,624 @@ class _InscriptionPageWidgetState extends State<InscriptionPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
+    return FutureBuilder<List<LeaguesRow>>(
+      future: LeaguesTable().queryRows(
+        queryFn: (q) => q,
+      ),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            body: Center(
+              child: SizedBox(
+                width: 50.0,
+                height: 50.0,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+        List<LeaguesRow> inscriptionPageLeaguesRowList = snapshot.data!;
 
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primary,
-        body: SafeArea(
-          top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
-                child: Row(
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            key: scaffoldKey,
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            body: SafeArea(
+              top: true,
+              child: SingleChildScrollView(
+                child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 270.0,
-                      height: 58.0,
-                      decoration: const BoxDecoration(),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.asset(
-                          'assets/images/Group_2.png',
-                          width: 234.0,
-                          height: 152.0,
-                          fit: BoxFit.fitWidth,
-                          alignment: const Alignment(0.0, -1.0),
-                        ),
+                    FFButtonWidget(
+                      onPressed: () async {
+                        GoRouter.of(context).prepareAuthEvent();
+                        await authManager.signOut();
+                        GoRouter.of(context).clearRedirectLocation();
+
+                        context.goNamedAuth('Login_page', context.mounted);
+                      },
+                      text: FFLocalizations.of(context).getText(
+                        'rd5n8oe2' /* Sign Out */,
                       ),
+                      options: FFButtonOptions(
+                        height: 40.0,
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            16.0, 0.0, 16.0, 0.0),
+                        iconPadding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        color: FlutterFlowTheme.of(context).primary,
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Lexend',
+                                  color: Colors.white,
+                                  letterSpacing: 0.0,
+                                ),
+                        elevation: 0.0,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 270.0,
+                            height: 58.0,
+                            decoration: const BoxDecoration(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.asset(
+                                'assets/images/Group_2.png',
+                                width: 234.0,
+                                height: 152.0,
+                                fit: BoxFit.fitWidth,
+                                alignment: const Alignment(0.0, -1.0),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 78.0,
+                      decoration: const BoxDecoration(),
+                      alignment: const AlignmentDirectional(0.0, 0.0),
+                      child: Text(
+                        FFLocalizations.of(context).getText(
+                          'bi9nkhv7' /* Choisi ton équipe */,
+                        ),
+                        style: FlutterFlowTheme.of(context)
+                            .headlineMedium
+                            .override(
+                              fontFamily: 'Oswald',
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16.0, 0.0, 0.0, 0.0),
+                          child: Text(
+                            FFLocalizations.of(context).getText(
+                              'tt7kqwez' /* Quel sport ? */,
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  fontFamily: 'Lexend',
+                                  letterSpacing: 0.0,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 22.0, 14.0, 0.0),
+                            child: Container(
+                              width: 100.0,
+                              height: 100.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Stack(
+                                alignment: const AlignmentDirectional(0.0, 0.0),
+                                children: [
+                                  InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      _model.selctedSport = 'Football';
+                                      safeSetState(() {});
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: SvgPicture.asset(
+                                            'assets/images/footballicon.svg',
+                                            width: 47.0,
+                                            height: 47.0,
+                                            fit: BoxFit.fitWidth,
+                                            alignment: const Alignment(0.0, -1.0),
+                                          ),
+                                        ),
+                                        Text(
+                                          FFLocalizations.of(context).getText(
+                                            'veaickj9' /* Football */,
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium
+                                              .override(
+                                                fontFamily: 'Lexend',
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Opacity(
+                                    opacity: _model.selctedSport == 'Football'
+                                        ? 1.0
+                                        : 0.0,
+                                    child: Align(
+                                      alignment:
+                                          const AlignmentDirectional(-1.0, -1.0),
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            10.0, 10.0, 0.0, 0.0),
+                                        child: Icon(
+                                          Icons.done_outline_outlined,
+                                          color: FlutterFlowTheme.of(context)
+                                              .success,
+                                          size: 24.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                14.0, 22.0, 16.0, 0.0),
+                            child: Container(
+                              width: 100.0,
+                              height: 100.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Stack(
+                                alignment: const AlignmentDirectional(0.0, 0.0),
+                                children: [
+                                  InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      _model.selctedSport = 'Rugby';
+                                      safeSetState(() {});
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: SvgPicture.asset(
+                                            'assets/images/rubyicon.svg',
+                                            width: 47.0,
+                                            height: 47.0,
+                                            fit: BoxFit.fitWidth,
+                                            alignment: const Alignment(0.0, -1.0),
+                                          ),
+                                        ),
+                                        Text(
+                                          FFLocalizations.of(context).getText(
+                                            'bl7x6zs1' /* Rugby */,
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Lexend',
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Opacity(
+                                    opacity: _model.selctedSport == 'Rugby'
+                                        ? 1.0
+                                        : 0.0,
+                                    child: Align(
+                                      alignment:
+                                          const AlignmentDirectional(-1.0, -1.0),
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            10.0, 10.0, 0.0, 0.0),
+                                        child: Icon(
+                                          Icons.done_outline_outlined,
+                                          color: FlutterFlowTheme.of(context)
+                                              .success,
+                                          size: 24.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16.0, 20.0, 0.0, 0.0),
+                          child: Text(
+                            FFLocalizations.of(context).getText(
+                              'gr7juxgl' /* Quelle ligue ? */,
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .labelLarge
+                                .override(
+                                  fontFamily: 'Lexend',
+                                  letterSpacing: 0.0,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 10.0, 16.0, 10.0),
+                            child: Container(
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(12.0),
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    10.0, 10.0, 10.0, 10.0),
+                                child: Builder(
+                                  builder: (context) {
+                                    final leagueChild =
+                                        inscriptionPageLeaguesRowList.toList();
+
+                                    return GridView.builder(
+                                      padding: EdgeInsets.zero,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 5,
+                                        crossAxisSpacing: 10.0,
+                                        mainAxisSpacing: 10.0,
+                                        childAspectRatio: 1.0,
+                                      ),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: leagueChild.length,
+                                      itemBuilder: (context, leagueChildIndex) {
+                                        final leagueChildItem =
+                                            leagueChild[leagueChildIndex];
+                                        return Stack(
+                                          children: [
+                                            InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                _model.selectedLeagueId =
+                                                    leagueChildItem.id;
+                                                safeSetState(() {});
+                                              },
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: Image.network(
+                                                  leagueChildItem.leagueIcon,
+                                                  width: 50.0,
+                                                  height: 50.0,
+                                                  fit: BoxFit.fitHeight,
+                                                ),
+                                              ),
+                                            ),
+                                            Opacity(
+                                              opacity:
+                                                  _model.selectedLeagueId ==
+                                                          leagueChildItem.id
+                                                      ? 1.0
+                                                      : 0.0,
+                                              child: Icon(
+                                                Icons.done_outline_outlined,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .success,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                      child: Text(
+                        FFLocalizations.of(context).getText(
+                          '1u64pi32' /* Quel club ? */,
+                        ),
+                        style: FlutterFlowTheme.of(context).labelLarge.override(
+                              fontFamily: 'Lexend',
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16.0, 10.0, 16.0, 10.0),
+                            child: Container(
+                              height: 170.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(12.0),
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Builder(
+                                builder: (context) {
+                                  if (_model.selectedLeagueId != null &&
+                                      _model.selectedLeagueId != '') {
+                                    return Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          10.0, 10.0, 10.0, 10.0),
+                                      child: FutureBuilder<List<ClubsRow>>(
+                                        future: ClubsTable().queryRows(
+                                          queryFn: (q) => q.eq(
+                                            'league_id',
+                                            valueOrDefault<String>(
+                                              _model.selectedLeagueId,
+                                              '0',
+                                            ),
+                                          ),
+                                        ),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          List<ClubsRow> gridViewClubsRowList =
+                                              snapshot.data!;
+
+                                          return GridView.builder(
+                                            padding: EdgeInsets.zero,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 5,
+                                              crossAxisSpacing: 10.0,
+                                              mainAxisSpacing: 10.0,
+                                              childAspectRatio: 1.0,
+                                            ),
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                gridViewClubsRowList.length,
+                                            itemBuilder:
+                                                (context, gridViewIndex) {
+                                              final gridViewClubsRow =
+                                                  gridViewClubsRowList[
+                                                      gridViewIndex];
+                                              return Stack(
+                                                children: [
+                                                  InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      _model.selectedClub =
+                                                          gridViewClubsRow.id;
+                                                      safeSetState(() {});
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0),
+                                                      child: Image.network(
+                                                        gridViewClubsRow
+                                                            .clubIcon!,
+                                                        width: 200.0,
+                                                        height: 200.0,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Opacity(
+                                                    opacity: _model
+                                                                .selectedClub ==
+                                                            gridViewClubsRow.id
+                                                        ? 1.0
+                                                        : 0.0,
+                                                    child: Icon(
+                                                      Icons.done_outline_sharp,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .warning,
+                                                      size: 24.0,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      width: 100.0,
+                                      height: 100.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                21.0, 25.0, 21.0, 0.0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                _model.result = await ClubFavTable().queryRows(
+                                  queryFn: (q) => q.eq(
+                                    'user_id',
+                                    currentUserUid,
+                                  ),
+                                );
+                                if (_model.result != null &&
+                                    (_model.result)!.isNotEmpty) {
+                                  await ClubFavTable().update(
+                                    data: {
+                                      'user_id': currentUserUid,
+                                      'club_id': _model.selectedClub,
+                                    },
+                                    matchingRows: (rows) => rows.eq(
+                                      'user_id',
+                                      currentUserUid,
+                                    ),
+                                  );
+                                } else {
+                                  await ClubFavTable().insert({
+                                    'user_id': currentUserUid,
+                                    'club_id': _model.selectedClub,
+                                  });
+                                }
+
+                                context.pushNamed('description_page');
+
+                                safeSetState(() {});
+                              },
+                              text: FFLocalizations.of(context).getText(
+                                'ljx95wcv' /* Suivant */,
+                              ),
+                              options: FFButtonOptions(
+                                height: 40.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 0.0, 16.0, 0.0),
+                                iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                color: FlutterFlowTheme.of(context).secondary,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .labelLarge
+                                    .override(
+                                      fontFamily: 'Lexend',
+                                      letterSpacing: 0.0,
+                                    ),
+                                elevation: 0.0,
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              Container(
-                width: double.infinity,
-                height: 78.0,
-                decoration: const BoxDecoration(),
-                alignment: const AlignmentDirectional(0.0, 0.0),
-                child: Text(
-                  FFLocalizations.of(context).getText(
-                    'lrmdwo8s' /* Choisi ton équipe */,
-                  ),
-                  style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Oswald',
-                        letterSpacing: 0.0,
-                      ),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
-                    child: Text(
-                      FFLocalizations.of(context).getText(
-                        '0ed7kgl6' /* Quel sport ? */,
-                      ),
-                      style: FlutterFlowTheme.of(context).labelLarge.override(
-                            fontFamily: 'Lexend',
-                            letterSpacing: 0.0,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 22.0, 14.0, 0.0),
-                      child: Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: SvgPicture.asset(
-                                'assets/images/footballicon.svg',
-                                width: 47.0,
-                                height: 47.0,
-                                fit: BoxFit.fitWidth,
-                                alignment: const Alignment(0.0, -1.0),
-                              ),
-                            ),
-                            Text(
-                              FFLocalizations.of(context).getText(
-                                'nmaohotq' /* Football */,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Lexend',
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(14.0, 22.0, 16.0, 0.0),
-                      child: Container(
-                        width: 100.0,
-                        height: 100.0,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: SvgPicture.asset(
-                                'assets/images/rubyicon.svg',
-                                width: 47.0,
-                                height: 47.0,
-                                fit: BoxFit.fitWidth,
-                                alignment: const Alignment(0.0, -1.0),
-                              ),
-                            ),
-                            Text(
-                              FFLocalizations.of(context).getText(
-                                'fl98cgd9' /* Rugby */,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Lexend',
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 0.0, 0.0),
-                    child: Text(
-                      FFLocalizations.of(context).getText(
-                        'bh8jjt34' /* Quelle ligue ? */,
-                      ),
-                      style: FlutterFlowTheme.of(context).labelLarge.override(
-                            fontFamily: 'Lexend',
-                            letterSpacing: 0.0,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          16.0, 10.0, 16.0, 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          borderRadius: BorderRadius.circular(12.0),
-                          shape: BoxShape.rectangle,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 10.0, 0.0, 0.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      _model.premier =
-                                          await PremierLeagueCall.call();
-
-                                      if ((_model.premier?.succeeded ?? true)) {
-                                        FFAppState().playerteamApifetch =
-                                            getJsonField(
-                                          (_model.premier?.jsonBody ?? ''),
-                                          r'''$''',
-                                        );
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() {});
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/laliga.png',
-                                        width: 50.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      FFAppState().bottomContainerColor =
-                                          const Color(0xFF0ECE38);
-                                      FFAppState().bottomContainerSiz = 90.0;
-                                      safeSetState(() {});
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/premier-league-logo.png',
-                                        width: 60.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      _model.laligaapivariable =
-                                          await LaligaCall.call();
-
-                                      if ((_model
-                                              .laligaapivariable?.succeeded ??
-                                          true)) {
-                                        FFAppState().playerteamApifetch =
-                                            getJsonField(
-                                          (_model.logoImageGrid?.jsonBody ??
-                                              ''),
-                                          r'''$..href''',
-                                        );
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() {});
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/ligue-1-logo.png',
-                                        width: 50.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      FFAppState().playerteamApifetch =
-                                          getJsonField(
-                                        (_model.premier?.jsonBody ?? ''),
-                                        r'''$''',
-                                      );
-                                      safeSetState(() {});
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/bundesliga-logo-white-bg.png',
-                                        width: 50.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 8.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: 50.0,
-                                    height: 80.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                    ),
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.asset(
-                                      'assets/images/serie-a-logo.png',
-                                      width: 50.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.asset(
-                                      'assets/images/Liga_Portugal.jpeg',
-                                      width: 60.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      _model.logoImageGrid =
-                                          await LaligaCall.call();
-
-                                      if ((_model.logoImageGrid?.succeeded ??
-                                          true)) {
-                                        FFAppState().playerteamApifetch =
-                                            getJsonField(
-                                          (_model.logoImageGrid?.jsonBody ??
-                                              ''),
-                                          r'''$''',
-                                        );
-                                        safeSetState(() {});
-                                      }
-
-                                      safeSetState(() {});
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.asset(
-                                        'assets/images/eredivisie-logo.png',
-                                        width: 70.0,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
-                child: Text(
-                  FFLocalizations.of(context).getText(
-                    'c523y1yy' /* Quel club ? */,
-                  ),
-                  style: FlutterFlowTheme.of(context).labelLarge.override(
-                        fontFamily: 'Lexend',
-                        letterSpacing: 0.0,
-                      ),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          12.0, 12.0, 12.0, 12.0),
-                      child: Container(
-                        width: 100.0,
-                        height: 148.0,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Builder(
-                          builder: (context) {
-                            final logoImageGird = getJsonField(
-                              FFAppState().apiResults,
-                              r'''$..href''',
-                            ).toList();
-
-                            return GridView.builder(
-                              padding: EdgeInsets.zero,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 10.0,
-                                mainAxisSpacing: 10.0,
-                                childAspectRatio: 1.0,
-                              ),
-                              scrollDirection: Axis.vertical,
-                              itemCount: logoImageGird.length,
-                              itemBuilder: (context, logoImageGirdIndex) {
-                                final logoImageGirdItem =
-                                    logoImageGird[logoImageGirdIndex];
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    getJsonField(
-                                      logoImageGirdItem,
-                                      r'''$''',
-                                    ).toString(),
-                                    width: 200.0,
-                                    height: 200.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
